@@ -13,8 +13,8 @@
   justify-content: center;
     }
     img {
-  max-width: 100%;
-  max-height:100%;
+  max-width: 60%;
+  max-height:60%;
 }
 
 .text {
@@ -24,35 +24,18 @@
 </style>
 
 <body>
-    <h1>Weather App</h1>
-    <form method="post">
-        <input type="text" name="location" placeholder="Enter location">
+    <h1 style="text-align: center;" >Weather App</h1>
+    <form method="post" style="text-align: center;">
+        <input type="text" name="location" placeholder="Search by exact city name">
         <input type="submit" value="Get Weather">
     </form>
-
+    <br>
     {% if location %}
-    <h1 align="center">Weather in <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-title="Disabled tooltip">
-        <button class="btn btn-primary" type="button" disabled>{{ location }}</button>
-      </span>
-
-
-    </h1>
+    
 
     {% if weather_data %}
     <div class="card-group">
-        <div class="col">
-          <div class="card" style="width: 60%;">
-            <img src="https://openweathermap.org/img/wn/{{ weather_data['weather'][0]['icon'] }}@2x.png" width="150px" height="320px" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">{{ weather_data['main']['temp'] }}&deg;C&nbsp;&nbsp;&nbsp;Feels like {{ weather_data['main']['feels_like'] }}&deg;C
-                &nbsp;&nbsp;&nbsp;<br>Min {{ weather_data['main']['temp_min'] }}&deg;C&nbsp;&nbsp;&nbsp;Max {{ weather_data['main']['temp_max'] }}&deg;C
-                <br>
-                {{ weather_data['weather'][0]['description'] }}</h5>
-              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
-          </div>
-        </div>
-
+          
 
         {% if location %}
                 {% if city %}
@@ -60,11 +43,11 @@
         <div class="col">
           <div class="card" style="width: 100%;">
             <div class="card-body">
-              <h5 class="card-title">Interesting facts about {{ location }} and {{ country[0]['name'] }}</h5>
+              <h5 class="card-title">Interesting facts about {{ location|capitalize }} and {{ country[0]['name'] }}</h5>
             <p class="card-text">
                 <ul class="list-group list-group-flush">
                     
-                    <li class="list-group-item">Population of {{ location }} is {{ city[0]['population'] }} </li>
+                    <li class="list-group-item">Population of {{ location|capitalize }} is {{ city[0]['population'] }} </li>
                     <li class="list-group-item">Population of {{ country[0]['name'] }} is {{ country[0]['population'] }} </li>
                     <li class="list-group-item">The urban population is {{ country[0]['urban_population'] }}% </li>
                     <li class="list-group-item">The population growth is {{ country[0]['pop_growth'] }}% </li>
@@ -86,6 +69,24 @@
           </div>
         </div>
 
+        <div class="col">
+          <div class="card" style="width: 100%;">
+            <h4 align="center">Weather in <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-title="Disabled tooltip">
+              <button class="btn btn-primary" type="button" disabled>{{ location|capitalize }}</button>
+            </span>
+          </h4>
+            <img src="https://openweathermap.org/img/wn/{{ weather_data['weather'][0]['icon'] }}@2x.png" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">{{ '%0.1f' % weather_data['main']['temp']|float }}&deg;C&nbsp;&nbsp;&nbsp;Feels like {{ '%0.1f' % weather_data['main']['feels_like']|float }}&deg;C
+                &nbsp;&nbsp;&nbsp;<br>Min {{ '%0.1f' % weather_data['main']['temp_min']|float }}&deg;C&nbsp;&nbsp;&nbsp;Max {{ '%0.1f' % weather_data['main']['temp_max']|float }}&deg;C
+                <br>
+                {{ weather_data['weather'][0]['description'] }}</h5>
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+          </div>
+        </div>
+
+
 
 
         {% if location %}
@@ -93,7 +94,7 @@
         <div class="col">
           <div class="card" style="width: 100%;">
             <div class="card-body">
-              <h5 class="card-title">Historical Events related to {{ location }}</h5>
+              <h5 class="card-title">Historical Events related to {{ location|capitalize }}</h5>
             <p class="card-text">
                 
             <ul class="list-group list-group-flush">
