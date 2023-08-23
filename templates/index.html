@@ -48,7 +48,7 @@
                 <ul class="list-group list-group-flush">
                     
                     <li class="list-group-item">Population of {{ location|capitalize }} is {{ city[0]['population'] }} </li>
-                    <li class="list-group-item">Population of {{ country[0]['name'] }} is {{ country[0]['population'] }} </li>
+                    <li class="list-group-item">Population of {{ country[0]['name'] }} is {{ '%0.0f' % country[0]['population']|int }}000 </li>
                     <li class="list-group-item">The urban population is {{ country[0]['urban_population'] }}% </li>
                     <li class="list-group-item">The population growth is {{ country[0]['pop_growth'] }}% </li>
                     <li class="list-group-item">Internet users - {{ country[0]['internet_users'] }}% </li>
@@ -75,13 +75,28 @@
               <button class="btn btn-primary" type="button" disabled>{{ location|capitalize }}</button>
             </span>
           </h4>
-            <img src="https://openweathermap.org/img/wn/{{ weather_data['weather'][0]['icon'] }}@2x.png" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">{{ '%0.1f' % weather_data['main']['temp']|float }}&deg;C&nbsp;&nbsp;&nbsp;Feels like {{ '%0.1f' % weather_data['main']['feels_like']|float }}&deg;C
-                &nbsp;&nbsp;&nbsp;<br>Min {{ '%0.1f' % weather_data['main']['temp_min']|float }}&deg;C&nbsp;&nbsp;&nbsp;Max {{ '%0.1f' % weather_data['main']['temp_max']|float }}&deg;C
-                <br>
-                {{ weather_data['weather'][0]['description'] }}</h5>
-              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+          <div class="card-body">
+          <img src="https://openweathermap.org/img/wn/{{ weather_data['weather'][0]['icon'] }}@2x.png" class="card-img-top" alt="...">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Now</th>
+                <th scope="col">Feels like</th>
+                <th scope="col">Min</th>
+                <th scope="col">Max</th>
+              </tr>
+            </thead>
+            <tbody>
+             
+              <tr>
+                <td>{{ '%0.1f' % weather_data['main']['temp']|float }}&deg;C</td>
+                <td>{{ '%0.1f' % weather_data['main']['feels_like']|float }}&deg;C</td>
+                <td>{{ '%0.1f' % weather_data['main']['temp_min']|float }}&deg;C</td>
+                <td>{{ '%0.1f' % weather_data['main']['temp_max']|float }}&deg;C</td>
+              </tr>
+            </tbody>
+          </table>
+                
             </div>
           </div>
         </div>
@@ -89,7 +104,7 @@
 
 
 
-        {% if location %}
+      {% if location %}
                 {% if historical_events %}
         <div class="col">
           <div class="card" style="width: 100%;">
@@ -103,13 +118,13 @@
                 {% endfor %}
             </ul>
                 {% endif %}
-        {% endif %}
+          {% endif %}
             </p>
             </div>
           </div>
         </div>
       </div>
-    {% endif %}
+      {% endif %}
 
 
 
