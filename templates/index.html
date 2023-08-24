@@ -1,163 +1,131 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    <title>Weather App</title>
-</head>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <title>Team Kichuk Paris App - Weather, statistics and Interesting facts for any city around the world</title>
+  </head>
 
-<style>
-    .container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-    }
-    img {
-  max-width: 40%;
-  max-height:40%;
-}
+  <style>
+      .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+      img {
+    max-width: 40%;
+    max-height:40%;
+  }
 
-.text {
-  font-size: 20px;
-  padding-left: 20px;
-}
-</style>
+  .text {
+    font-size: 20px;
+    padding-left: 20px;
+  }
+  </style>
 
-<body>
-    <h1 style="text-align: center;" >Weather App</h1>
+  <body>
+    <h1 style="text-align: center;" >Team Kichuk Paris App - Weather, statistics and Interesting facts for any city around the world</h1>
     <form method="post" style="text-align: center;">
         <input type="text" name="location" placeholder="Search by exact city name">
         <input type="submit" value="Get Weather">
     </form>
     <br>
-{% if location %}
-    
+    {% if location %}
+      {% if weather_data %}
+        <div class="card-group">
+        {% if location %}
+          {% if city %}
+            {% if country %}
+              <div class="col">
+                <div class="card" style="width: 100%;">
+                  <div class="card-body">
+                    <h5 class="card-title">Interesting facts about {{ location|capitalize }} and {{ country[0]['name'] }}</h5>
+                    <p class="card-text">
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Population of {{ location|capitalize }} is {{ city[0]['population'] }} </li>
+                        <li class="list-group-item">Population of {{ country[0]['name'] }} is {{ '%0.0f' % country[0]['population']|int }}000 </li>
+                        <li class="list-group-item">The urban population is {{ country[0]['urban_population'] }}% </li>
+                        <li class="list-group-item">The population growth is {{ country[0]['pop_growth'] }}% </li>
+                        <li class="list-group-item">Internet users - {{ country[0]['internet_users'] }}% </li>
+                        <li class="list-group-item">The average life expectancy of men is {{ country[0]['life_expectancy_male'] }} and of women is {{ country[0]['life_expectancy_female'] }} </li>
+                        <li class="list-group-item">The surface area of {{ country[0]['name'] }} is {{ country[0]['surface_area'] }}km </li>
+                        <li class="list-group-item">The forested area is {{ country[0]['forested_area'] }}% </li>
+                        <li class="list-group-item">Employment in industry is {{ country[0]['employment_industry'] }}%</li>
+                        <li class="list-group-item">Employment in services is {{ country[0]['employment_services'] }}%</li>                    
+                        <li class="list-group-item">The local currency is {{ country[0]['currency']['name'] }} -  {{ country[0]['currency']['code'] }} </li>
+                      </ul>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endif %}
+        {% endif %}
 
-    {% if weather_data %}
-    <div class="card-group">
-          
+            <div class="col">
+              <div class="card" style="width: 100%;">
+                <h4 align="center">Weather in <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-title="Disabled tooltip">
+                  <button class="btn btn-primary" type="button" disabled>{{ location|capitalize }}</button>
+                </span>
+              </h4>
+              <h3 align="center">{{ weather_data['weather'][0]['description']|capitalize }}</h3>
+                <div class="card-body">
+                  <img src="https://openweathermap.org/img/wn/{{ weather_data['weather'][0]['icon'] }}@2x.png" class="card-img-top" alt="...">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Now</th>
+                        <th scope="col">Feels like</th>
+                        <th scope="col">Min</th>
+                        <th scope="col">Max</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{ '%0.1f' % weather_data['main']['temp']|float }}&deg;C</td>
+                        <td>{{ '%0.1f' % weather_data['main']['feels_like']|float }}&deg;C</td>
+                        <td>{{ '%0.1f' % weather_data['main']['temp_min']|float }}&deg;C</td>
+                        <td>{{ '%0.1f' % weather_data['main']['temp_max']|float }}&deg;C</td>
+                      </tr>
+                      <tr>
+                        <th scope="col">Sunrise</th>
+                        <td scope="col">{{ weather_data['sys']['sunrise']|unix_to_datetime }}</td>
+                        <th scope="col">Sunset</th>
+                        <td scope="col">{{ weather_data['sys']['sunset']|unix_to_datetime  }}</td>
+                      </tr>
+                      <tr>
+                        <th scope="col">Humidity</th>
+                        <td scope="col">{{ weather_data['main']['humidity'] }}%</td>
+                        <th scope="col">Pressure</th>
+                        <td scope="col">{{ weather_data['main']['pressure'] }} hPa</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                    
+                </div>
+              </div>
+            </div>
 
         {% if location %}
-                {% if city %}
-                {% if country %}
-        <div class="col">
-          <div class="card" style="width: 100%;">
-            <div class="card-body">
-              <h5 class="card-title">Interesting facts about {{ location|capitalize }} and {{ country[0]['name'] }}</h5>
-            <p class="card-text">
-                <ul class="list-group list-group-flush">
-                    
-                    <li class="list-group-item">Population of {{ location|capitalize }} is {{ city[0]['population'] }} </li>
-                    <li class="list-group-item">Population of {{ country[0]['name'] }} is {{ '%0.0f' % country[0]['population']|int }}000 </li>
-                    <li class="list-group-item">The urban population is {{ country[0]['urban_population'] }}% </li>
-                    <li class="list-group-item">The population growth is {{ country[0]['pop_growth'] }}% </li>
-                    <li class="list-group-item">Internet users - {{ country[0]['internet_users'] }}% </li>
-                    <li class="list-group-item">The average life expectancy of men is {{ country[0]['life_expectancy_male'] }} and of women is {{ country[0]['life_expectancy_female'] }} </li>
-                    <li class="list-group-item">The surface area of {{ country[0]['name'] }} is {{ country[0]['surface_area'] }}km </li>
-                    <li class="list-group-item">The forested area is {{ country[0]['forested_area'] }}% </li>
-                    <li class="list-group-item">Employment in industry is {{ country[0]['employment_industry'] }}%</li>
-                    <li class="list-group-item">Employment in services is {{ country[0]['employment_services'] }}%</li>                    
-                    <li class="list-group-item">The local currency is {{ country[0]['currency']['name'] }} -  {{ country[0]['currency']['code'] }} </li>
-                    
-                </ul>
-        
-                {% endif %}
-                {% endif %}
-        {% endif %}
-            </p>
+          {% if historical_events %}
+          <div class="col">
+            <div class="card" style="width: 100%;">
+              <div class="card-body">
+                <h5 class="card-title">Historical Events related to {{ location|capitalize }}</h5>
+                <p class="card-text">
+                  <ul class="list-group list-group-flush">
+                    {% for event in historical_events %}
+                    <li class="list-group-item"><strong>{{ event['day'] }}/{{ event['month'] }}/{{ event['year'] }}</strong> {{ event['event'] }}</li>
+                    {% endfor %}
+                  </ul>
+                </p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="col">
-          <div class="card" style="width: 100%;">
-            <h4 align="center">Weather in <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-title="Disabled tooltip">
-              <button class="btn btn-primary" type="button" disabled>{{ location|capitalize }}</button>
-            </span>
-          </h4>
-          <h3 align="center">{{ weather_data['weather'][0]['description']|capitalize }}</h3>
-          <div class="card-body">
-          <img src="https://openweathermap.org/img/wn/{{ weather_data['weather'][0]['icon'] }}@2x.png" class="card-img-top" alt="...">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Now</th>
-                <th scope="col">Feels like</th>
-                <th scope="col">Min</th>
-                <th scope="col">Max</th>
-              </tr>
-            </thead>
-            <tbody>
-             
-              <tr>
-                <td>{{ '%0.1f' % weather_data['main']['temp']|float }}&deg;C</td>
-                <td>{{ '%0.1f' % weather_data['main']['feels_like']|float }}&deg;C</td>
-                <td>{{ '%0.1f' % weather_data['main']['temp_min']|float }}&deg;C</td>
-                <td>{{ '%0.1f' % weather_data['main']['temp_max']|float }}&deg;C</td>
-              </tr>
-              <tr>
-                <th scope="col">Sunrise</th>
-                <td scope="col">{{ weather_data['sys']['sunrise']|unix_to_datetime }}</td>
-                <th scope="col">Sunset</th>
-                <td scope="col">{{ weather_data['sys']['sunset']|unix_to_datetime  }}</td>
-              </tr>
-            </tbody>
-          </table>
-                
-            </div>
-          </div>
-        </div>
-
-
-
-
-      {% if location %}
-                {% if historical_events %}
-        <div class="col">
-          <div class="card" style="width: 100%;">
-            <div class="card-body">
-              <h5 class="card-title">Historical Events related to {{ location|capitalize }}</h5>
-            <p class="card-text">
-                
-            <ul class="list-group list-group-flush">
-                {% for event in historical_events %}
-                <li class="list-group-item"><strong>{{ event['day'] }}/{{ event['month'] }}/{{ event['year'] }}</strong> {{ event['event'] }}</li>
-                {% endfor %}
-            </ul>
-                {% endif %}
           {% endif %}
-            </p>
-            </div>
-          </div>
-        </div>
-      </div>
-  {% endif %}
-
-
-
-
- 
-{% endif %}
-
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</body>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+  </body>
 </html>
