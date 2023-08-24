@@ -1,0 +1,2 @@
+The unix time since the epoch received from the API response for sunrise and sunset is currently to the local time of the client/development server - must be 
+converted according to the time zone of the searched city. A new template filter to implemented to fix this issue.
