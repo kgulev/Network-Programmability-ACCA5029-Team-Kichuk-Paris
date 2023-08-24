@@ -13,8 +13,8 @@
   justify-content: center;
     }
     img {
-  max-width: 60%;
-  max-height:60%;
+  max-width: 40%;
+  max-height:40%;
 }
 
 .text {
@@ -30,7 +30,7 @@
         <input type="submit" value="Get Weather">
     </form>
     <br>
-    {% if location %}
+{% if location %}
     
 
     {% if weather_data %}
@@ -75,6 +75,7 @@
               <button class="btn btn-primary" type="button" disabled>{{ location|capitalize }}</button>
             </span>
           </h4>
+          <h3 align="center">{{ weather_data['weather'][0]['description']|capitalize }}</h3>
           <div class="card-body">
           <img src="https://openweathermap.org/img/wn/{{ weather_data['weather'][0]['icon'] }}@2x.png" class="card-img-top" alt="...">
           <table class="table">
@@ -93,6 +94,12 @@
                 <td>{{ '%0.1f' % weather_data['main']['feels_like']|float }}&deg;C</td>
                 <td>{{ '%0.1f' % weather_data['main']['temp_min']|float }}&deg;C</td>
                 <td>{{ '%0.1f' % weather_data['main']['temp_max']|float }}&deg;C</td>
+              </tr>
+              <tr>
+                <th scope="col">Sunrise</th>
+                <td scope="col">{{ weather_data['sys']['sunrise']|unix_to_datetime }}</td>
+                <th scope="col">Sunset</th>
+                <td scope="col">{{ weather_data['sys']['sunset']|unix_to_datetime  }}</td>
               </tr>
             </tbody>
           </table>
@@ -124,13 +131,13 @@
           </div>
         </div>
       </div>
-      {% endif %}
+  {% endif %}
 
 
 
 
  
-      {% endif %}
+{% endif %}
 
 
       

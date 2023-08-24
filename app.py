@@ -1,4 +1,4 @@
-from datetime import time
+from datetime import datetime
 from flask import Flask, render_template, request
 import requests
 import json
@@ -67,6 +67,10 @@ def index():
 @app.template_filter('ctime')
 def timectime(s):
     return ctime(s)
+
+@app.template_filter('unix_to_datetime')
+def unix_to_datetime(unix_time):
+    return datetime.utcfromtimestamp(int(unix_time)).strftime('%H:%M:%S')
 
 if __name__ == '__main__':
     app.run(debug=True)
